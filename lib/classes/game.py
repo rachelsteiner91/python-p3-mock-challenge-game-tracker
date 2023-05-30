@@ -1,75 +1,74 @@
 class Game:
+# init method / constructor 
     def __init__(self, title):
-        self.title = title
+        self.title = title #setting the title
         self._results = []
         self._players = []
 
-#Game property title
-# Returns the Game's title
-# Titles must be strings greater than 0 characters
-# If you are using exceptions, uncomment lines 25-26 and 32-33 in testing/game_test.py.
-# raise Exception if setter fails
-    @property
-    def title(self):
-        return self._title
+#1 getter setter OPTION 1 for setting up the title
+    def get_title(self):
+        return self._title #returning the title property
+    
+    def set_title(self, title): #setter
+            self._title = title #setting up the title property with the inputted title param
+    
+    title = property(get_title, set_title) #compiling the getter and setter
+
+#1 getter setter OPTION 2 for setting up the title - using the decorator
+    @property #1. use property decorator
+    def title(self): #2. write the getter function
+         return self._title #3. we return the title property
     
     @title.setter
-    def title(self, title):
-        if title and isinstance(title, str) and not hasattr(self, 'title'):
-            self._title = title
-        else:
-            raise Exception("Title must be a string greater than 0 characters.")
-        
-    
+    def title(self, title):  #1. setter then #2. setting up the property 
+            #3. if the inputted title is a string
+            #4. if the length is greater than 0
+            #5. check that it has attribute: if false, the attribute doesn't exist. If true, then the attribute exists
+            if isinstance(title,str) and len(title) > 0 and not hasattr(self, 'title'):        
+                self._title = title 
+            else:
+                 raise Exception("Title must be string greater than 0 character. Title cannot be changed after the game is initialized")
+         
+     
+#####Object Relationship Attributes and Properties for the Game class####
+##Game results(self, new_result=None)##
     def results(self, new_result=None):
         from classes.result import Result
         if new_result and isinstance(new_result, Result):
+            #1. check if new result exists
             self._results.append(new_result)
+            #2. add new results to instance attribute
         return self._results
-    
+    #3. return the list of result instance associated with the game instance
+    #4. call this in the Result class as well as 'game.result(self)'
+
+##Game players(self, new_player=None)## 
     def players(self, new_player=None):
         from classes.player import Player
-        pass
+        if new_player and isinstance(new_player, Player):
+            self._players.append(new_player)
+            #add the new player to the game.player list
+        return self._players
+    #You will need to call this method in Result.__init__() as 'game.players(player)'
+
+
     
+    
+###Aggregate and Association Methods = bonus deliverables###### 
+####these are bonus deliverables#####
     def average_score(self, player):
         pass
 
-    def get_title(self):
-        return self.title
+ 
 
 
-#####
-    # class Game:
-    # def __init__(self, title):
-    #     self.title = title
-    #     self._results = []
-    #     self._players = []
 
-    # @property
-    # def title(self):
-    #     return self._title
-    
-    # @title.setter
-    # def title(self, title):
-    #     if title and isinstance(title, str) and not hasattr(self, 'title'):
-    #         self._title = title
-    #     else:
-    #         raise Exception
-        
-    # def results(self, new_result=None):
-    #     from classes.result import Result
-    #     if new_result and isinstance(new_result, Result):
-    #         self._results.append(new_result)
-    #     return self._results
-    
-    # def players(self, new_player=None):
-    #     from classes.player import Player
-    #     if new_player and isinstance(new_player, Player):
-    #         self._players.append(new_player)
-    #     return self._players
-    
-    # def average_score(self, player):
-    #     player_scores = [r.score for r in self._results if r.player == player]
-    #     if player_scores:
-    #         return sum(player_scores) / len(player_scores)
-    #     return 0
+
+
+
+
+
+
+
+
+
